@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sensay Email Generator</title>
 
   <style>
@@ -12,15 +12,15 @@
 
     body {
       margin: 0;
-      font-family: Arial, "Noto Sans TC", sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       background: #f5f7fb;
-      color: #222;
+      color: #1f2937;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px 60px;
+    .page {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 40px 20px 70px;
     }
 
     .header {
@@ -29,37 +29,34 @@
 
     .header h1 {
       margin: 0 0 8px;
-      font-size: 30px;
+      font-size: 32px;
+      color: #111827;
     }
 
     .header p {
       margin: 0;
-      color: #666;
+      color: #6b7280;
+      line-height: 1.6;
     }
 
     .card {
-      background: white;
-      border-radius: 14px;
+      background: #ffffff;
+      border-radius: 16px;
       padding: 28px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
       margin-bottom: 24px;
-      box-shadow: 0 3px 14px rgba(0,0,0,0.06);
     }
 
-    .card h2 {
-      margin-top: 0;
-      font-size: 20px;
-    }
-
-    .form-grid {
+    .grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
     }
 
     .field {
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 8px;
     }
 
     .field.full {
@@ -67,57 +64,63 @@
     }
 
     label {
+      font-weight: 700;
       font-size: 14px;
-      font-weight: 600;
+      color: #374151;
     }
 
     input,
     select {
       width: 100%;
-      padding: 11px 12px;
-      border: 1px solid #d5d9e2;
-      border-radius: 8px;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 9px;
+      background: #ffffff;
+      color: #111827;
       font-size: 15px;
-      background: white;
+      outline: none;
     }
 
     input:focus,
     select:focus {
-      outline: none;
-      border-color: #555;
-    }
-
-    .hint {
-      font-size: 12px;
-      color: #777;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
 
     .hidden {
       display: none !important;
     }
 
-    .generate-btn {
+    .actions {
+      display: flex;
+      justify-content: flex-end;
       margin-top: 24px;
-      width: 100%;
-      border: none;
+    }
+
+    button {
+      border: 0;
       border-radius: 9px;
-      padding: 14px;
-      font-size: 16px;
+      padding: 12px 20px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      background: #111;
+    }
+
+    .primary {
+      background: #111827;
       color: white;
     }
 
-    .generate-btn:hover {
-      opacity: 0.88;
+    .secondary {
+      background: #eef2f7;
+      color: #111827;
     }
 
-    .result-section {
+    .result-card {
       display: none;
     }
 
-    .result-section.show {
+    .result-card.show {
       display: block;
     }
 
@@ -126,61 +129,90 @@
       justify-content: space-between;
       align-items: center;
       gap: 15px;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
-    .result-header h3 {
+    .result-header h2 {
       margin: 0;
-      font-size: 15px;
-    }
-
-    .copy-btn {
-      border: 1px solid #ccc;
-      background: white;
-      padding: 7px 12px;
-      border-radius: 7px;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
-    .copy-btn:hover {
-      background: #f3f3f3;
+      font-size: 22px;
     }
 
     .subject-box {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
       padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: #fafafa;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
+    }
+
+    .subject-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    #subjectOutput {
+      font-weight: 700;
       word-break: break-word;
     }
 
-    .email-box {
+    .email-preview {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
       padding: 24px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      min-height: 250px;
-      line-height: 1.65;
       background: white;
-      word-break: break-word;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
     }
 
-    .email-box p {
+    .email-preview p {
       margin-top: 0;
       margin-bottom: 16px;
     }
 
-    .email-box a {
+    .email-preview a {
       color: #1155cc;
     }
 
-    .copied {
-      background: #eaf7ed !important;
+    .email-preview .signature {
+      margin-top: 28px;
     }
 
-    @media (max-width: 720px) {
-      .form-grid {
+    .email-preview .signature p {
+      margin-bottom: 14px;
+    }
+
+    .signature-logo {
+      display: block;
+      width: 155px;
+      max-width: 100%;
+      height: auto;
+      margin-top: 8px;
+    }
+
+    .copy-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .status {
+      margin-top: 12px;
+      color: #15803d;
+      font-size: 14px;
+      min-height: 20px;
+    }
+
+    .note {
+      margin-top: 8px;
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+      .grid {
         grid-template-columns: 1fr;
       }
 
@@ -188,759 +220,821 @@
         grid-column: auto;
       }
 
-      .container {
-        margin-top: 20px;
+      .result-header {
+        align-items: flex-start;
+        flex-direction: column;
       }
 
-      .card {
-        padding: 20px;
+      .actions {
+        justify-content: stretch;
+      }
+
+      .actions button {
+        width: 100%;
       }
     }
   </style>
 </head>
 
 <body>
+  <main class="page">
 
-<div class="container">
-
-  <div class="header">
-    <h1>Sensay Email Generator</h1>
-    <p>Generate account activation, renewal, trial, and expiry reminder emails.</p>
-  </div>
-
-  <div class="card">
-
-    <h2>Email Information</h2>
-
-    <div class="form-grid">
-
-      <!-- Account Type -->
-      <div class="field">
-        <label for="accountType">Account Type</label>
-        <select id="accountType">
-          <option value="admin">Admin</option>
-          <option value="teacher">Teacher</option>
-        </select>
-      </div>
-
-      <!-- Email Type -->
-      <div class="field">
-        <label for="emailType">Email Type</label>
-        <select id="emailType"></select>
-      </div>
-
-      <!-- School / Recipient -->
-      <div class="field full" id="schoolField">
-        <label id="schoolLabel" for="schoolName">School Name</label>
-        <input
-          type="text"
-          id="schoolName"
-          placeholder="例如：新竹市竹光國中"
-        >
-      </div>
-
-      <!-- Username -->
-      <div class="field" id="usernameField">
-        <label for="username">User Name</label>
-        <input
-          type="email"
-          id="username"
-          placeholder="example@school.edu.tw"
-        >
-      </div>
-
-      <!-- Password -->
-      <div class="field" id="passwordField">
-        <label for="password">Password</label>
-        <input
-          type="text"
-          id="password"
-          placeholder="Password"
-          autocomplete="off"
-        >
-      </div>
-
-      <!-- Start Date -->
-      <div class="field" id="startDateField">
-        <label id="startDateLabel" for="startDate">啟用日期（選填）</label>
-        <input type="date" id="startDate">
-      </div>
-
-      <!-- End Date -->
-      <div class="field" id="endDateField">
-        <label id="endDateLabel" for="endDate">到期日期（選填）</label>
-        <input type="date" id="endDate">
-      </div>
-
-      <!-- Student Count -->
-      <div class="field" id="studentCountField">
-        <label id="studentCountLabel" for="studentCount">學生人數（選填）</label>
-        <input
-          type="number"
-          id="studentCount"
-          min="1"
-          placeholder="例如：200"
-        >
-      </div>
-
-      <!-- Language -->
-      <div class="field" id="languageField">
-        <label for="language">Language</label>
-        <select id="language">
-          <option value="zh">中文</option>
-          <option value="en">English</option>
-        </select>
-      </div>
-
-      <!-- Parent Platform -->
-      <div class="field" id="platformField">
-        <label for="parentPlatform">親師生平台</label>
-        <select id="parentPlatform">
-          <option value="no">否</option>
-          <option value="yes">是</option>
-        </select>
-      </div>
-
-      <!-- Distributor -->
-      <div class="field" id="distributorField">
-        <label for="distributor">經銷商</label>
-        <select id="distributor">
-          <option value="no">沒有經銷商</option>
-          <option value="yes">有經銷商</option>
-        </select>
-      </div>
-
+    <div class="header">
+      <h1>Sensay Email Generator</h1>
+      <p>
+        Enter the account information below to generate a ready-to-send Sensay email.
+      </p>
     </div>
 
-    <button class="generate-btn" onclick="generateEmail()">
-      Generate Email
-    </button>
+    <section class="card">
+      <div class="grid">
 
-  </div>
+        <div class="field">
+          <label for="accountType">Account Type</label>
+          <select id="accountType">
+            <option value="admin">Admin</option>
+            <option value="teacher">Teacher</option>
+          </select>
+        </div>
 
-  <!-- Results -->
-  <div class="card result-section" id="resultSection">
+        <div class="field">
+          <label for="emailType">Email Type</label>
+          <select id="emailType"></select>
+        </div>
 
-    <h2>Generated Email</h2>
+        <div class="field" id="schoolField">
+          <label for="schoolName" id="schoolLabel">School Name</label>
+          <input
+            id="schoolName"
+            type="text"
+            placeholder="Enter school name"
+          />
+        </div>
 
-    <div class="result-header">
-      <h3>Subject</h3>
-      <button class="copy-btn" onclick="copySubject(this)">
-        Copy Subject
-      </button>
-    </div>
+        <div class="field" id="usernameField">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            type="email"
+            placeholder="example@school.edu.tw"
+            autocomplete="off"
+          />
+        </div>
 
-    <div class="subject-box" id="subjectOutput"></div>
+        <div class="field" id="passwordField">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="text"
+            placeholder="Enter temporary password"
+            autocomplete="off"
+          />
+        </div>
 
-    <div class="result-header">
-      <h3>Email Body</h3>
-      <button class="copy-btn" onclick="copyEmail(this)">
-        Copy Email
-      </button>
-    </div>
+        <div class="field hidden" id="startDateField">
+          <label for="startDate" id="startDateLabel">Start Date</label>
+          <input id="startDate" type="date" />
+        </div>
 
-    <div class="email-box" id="emailOutput"></div>
+        <div class="field hidden" id="endDateField">
+          <label for="endDate" id="endDateLabel">End Date</label>
+          <input id="endDate" type="date" />
+        </div>
 
-  </div>
+        <div class="field hidden" id="studentCountField">
+          <label for="studentCount" id="studentCountLabel">
+            Number of Students
+          </label>
+          <input
+            id="studentCount"
+            type="number"
+            min="1"
+            placeholder="Enter number of students"
+          />
+        </div>
 
-</div>
+        <div class="field" id="languageField">
+          <label for="language">Email Language</label>
+          <select id="language">
+            <option value="zh">Chinese</option>
+            <option value="en">English</option>
+          </select>
+        </div>
 
+        <div class="field" id="platformField">
+          <label for="parentPlatform">
+            Parent-Teacher-Student Platform
+          </label>
+          <select id="parentPlatform">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
 
-<script>
+        <div class="field hidden" id="distributorField">
+          <label for="distributor">Distributor</label>
+          <select id="distributor">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
 
-const accountType = document.getElementById("accountType");
-const emailType = document.getElementById("emailType");
+        <div class="field">
+          <label for="signature">Email Signature</label>
+          <select id="signature">
+            <option value="zh">Chinese</option>
+            <option value="en">English</option>
+            <option value="none">None</option>
+          </select>
+        </div>
 
-const schoolField = document.getElementById("schoolField");
-const schoolLabel = document.getElementById("schoolLabel");
+      </div>
 
-const usernameField = document.getElementById("usernameField");
-const passwordField = document.getElementById("passwordField");
+      <div class="actions">
+        <button class="primary" id="generateBtn">
+          Generate Email
+        </button>
+      </div>
+    </section>
 
-const startDateField = document.getElementById("startDateField");
-const endDateField = document.getElementById("endDateField");
-const studentCountField = document.getElementById("studentCountField");
+    <section class="card result-card" id="resultCard">
 
-const startDateLabel = document.getElementById("startDateLabel");
-const endDateLabel = document.getElementById("endDateLabel");
-const studentCountLabel = document.getElementById("studentCountLabel");
+      <div class="result-header">
+        <h2>Generated Email</h2>
 
-const languageField = document.getElementById("languageField");
-const platformField = document.getElementById("platformField");
-const distributorField = document.getElementById("distributorField");
+        <div class="copy-actions">
+          <button class="secondary" id="copySubjectBtn">
+            Copy Subject
+          </button>
 
+          <button class="primary" id="copyEmailBtn">
+            Copy Email
+          </button>
+        </div>
+      </div>
 
-/* ------------------------------
-   Email Type Options
--------------------------------- */
+      <div class="subject-box">
+        <div class="subject-label">Subject</div>
+        <div id="subjectOutput"></div>
+      </div>
 
-function updateEmailTypes() {
+      <div class="email-preview" id="emailOutput"></div>
 
-  emailType.innerHTML = "";
+      <div class="status" id="copyStatus"></div>
 
-  if (accountType.value === "teacher") {
+      <div class="note">
+        Copy Email preserves formatting and links when pasted into Gmail.
+      </div>
 
-    emailType.innerHTML =
-      `<option value="new">新用戶</option>`;
+    </section>
 
-  } else {
+  </main>
 
-    emailType.innerHTML = `
-      <option value="new">新用戶</option>
-      <option value="renewal">續訂</option>
-      <option value="trial">試用</option>
-      <option value="expiry">到期提醒</option>
-    `;
-  }
+  <script>
+    const accountType = document.getElementById("accountType");
+    const emailType = document.getElementById("emailType");
 
-  updateFields();
-}
+    const schoolField = document.getElementById("schoolField");
+    const schoolLabel = document.getElementById("schoolLabel");
+    const schoolName = document.getElementById("schoolName");
 
+    const usernameField = document.getElementById("usernameField");
+    const username = document.getElementById("username");
 
-/* ------------------------------
-   Dynamic Fields
--------------------------------- */
+    const passwordField = document.getElementById("passwordField");
+    const password = document.getElementById("password");
 
-function updateFields() {
+    const startDateField = document.getElementById("startDateField");
+    const startDateLabel = document.getElementById("startDateLabel");
+    const startDate = document.getElementById("startDate");
 
-  const account = accountType.value;
-  const type = emailType.value;
+    const endDateField = document.getElementById("endDateField");
+    const endDateLabel = document.getElementById("endDateLabel");
+    const endDate = document.getElementById("endDate");
 
-  // Reset visibility
-  schoolField.classList.remove("hidden");
-  usernameField.classList.remove("hidden");
-  passwordField.classList.remove("hidden");
-
-  startDateField.classList.remove("hidden");
-  endDateField.classList.remove("hidden");
-  studentCountField.classList.remove("hidden");
-
-  languageField.classList.remove("hidden");
-  platformField.classList.remove("hidden");
-
-  distributorField.classList.add("hidden");
-
-  schoolLabel.textContent = "School Name";
-
-  // TEACHER
-  if (account === "teacher") {
-
-    schoolField.classList.add("hidden");
-
-    startDateField.classList.add("hidden");
-    endDateField.classList.add("hidden");
-    studentCountField.classList.add("hidden");
-
-    passwordField.classList.remove("hidden");
-
-    return;
-  }
-
-
-  // ADMIN EXPIRY
-  if (type === "expiry") {
-
-    schoolLabel.textContent = "School / Recipient Name";
-
-    usernameField.classList.add("hidden");
-    passwordField.classList.add("hidden");
-
-    startDateField.classList.add("hidden");
-    studentCountField.classList.add("hidden");
-
-    languageField.classList.add("hidden");
-    platformField.classList.add("hidden");
-
-    distributorField.classList.remove("hidden");
-
-    endDateLabel.textContent = "到期日期";
-
-    return;
-  }
-
-
-  // NEW
-  if (type === "new") {
-
-    passwordField.classList.remove("hidden");
-
-    startDateLabel.textContent = "啟用日期（選填）";
-    endDateLabel.textContent = "到期日期（選填）";
-    studentCountLabel.textContent = "學生人數（選填）";
-  }
-
-
-  // RENEWAL
-  if (type === "renewal") {
-
-    passwordField.classList.add("hidden");
-
-    startDateLabel.textContent = "啟用日期";
-    endDateLabel.textContent = "到期日期";
-    studentCountLabel.textContent = "學生人數";
-  }
-
-
-  // TRIAL
-  if (type === "trial") {
-
-    passwordField.classList.remove("hidden");
-
-    startDateLabel.textContent = "試用啟用日期";
-    endDateLabel.textContent = "試用到期日期";
-    studentCountLabel.textContent = "試用學生人數";
-
+    const studentCountField = document.getElementById("studentCountField");
+    const studentCountLabel = document.getElementById("studentCountLabel");
     const studentCount = document.getElementById("studentCount");
 
-    if (!studentCount.value) {
-      studentCount.value = 30;
+    const languageField = document.getElementById("languageField");
+    const language = document.getElementById("language");
+
+    const platformField = document.getElementById("platformField");
+    const parentPlatform = document.getElementById("parentPlatform");
+
+    const distributorField = document.getElementById("distributorField");
+    const distributor = document.getElementById("distributor");
+
+    const signature = document.getElementById("signature");
+
+    const generateBtn = document.getElementById("generateBtn");
+
+    const resultCard = document.getElementById("resultCard");
+    const subjectOutput = document.getElementById("subjectOutput");
+    const emailOutput = document.getElementById("emailOutput");
+
+    const copySubjectBtn = document.getElementById("copySubjectBtn");
+    const copyEmailBtn = document.getElementById("copyEmailBtn");
+    const copyStatus = document.getElementById("copyStatus");
+
+    const LOGO_URL =
+      "https://sensay-service.github.io/sensay-email-generator/sensay-logo.png";
+
+    const SCHOOL_LOGIN = "https://school.oksensay.com";
+    const STUDENT_LOGIN = "https://learn.oksensay.com";
+
+    const ZH_ADMIN_GUIDE =
+      "https://docs.google.com/presentation/d/13_5qgyYasrEOL3iHBjlA_eco9A534HUNnLF2z04cS00/edit#slide=id.g14b48c14b97_0_51";
+
+    const ZH_TEACHER_GUIDE =
+      "https://docs.google.com/presentation/d/12MUJ3ydnmGEDIFYlFw51e_pyJQ4OWc5Rc1oUA2kiNcg/edit#slide=id.gc6f80d1ff_0_0";
+
+    const ZH_STUDENT_GUIDE =
+      "https://docs.google.com/presentation/d/1r9S-0-pFMYv7819QPVongP0waYqmnLJYkOvg-JVWJKM/edit#slide=id.gc6f80d1ff_0_0";
+
+    const ZH_YOUTUBE =
+      "https://www.youtube.com/playlist?list=PLnIV4hsDRlHErCZ9A6gPI9FWGLyyQX_qZ";
+
+    const EN_ADMIN_GUIDE =
+      "https://docs.google.com/presentation/d/1zOClZxs7c9r_qEzqkhLEMy0JNmYnT7lrf0IQKPKeKAY/edit?usp=sharing";
+
+    const EN_TEACHER_GUIDE =
+      "https://docs.google.com/presentation/d/1XuaAHCSNvGIDCXifPD_17CmXi0-Jja27OQr7v0iCzTo/edit?usp=sharing";
+
+    const EN_STUDENT_GUIDE =
+      "https://docs.google.com/presentation/d/1YUt_Jd9sFAToXCd0Xv32KRsEWRRI8WfMw0PAQwdz7t4/edit?usp=sharing";
+
+    const EN_TEACHER_YOUTUBE =
+      "https://youtube.com/playlist?list=PLnIV4hsDRlHFwQEOltfkHJ93b3JifrvE6";
+
+    const EN_ADMIN_YOUTUBE =
+      "https://www.youtube.com/watch?v=7R25LbGwk5U&list=PLnIV4hsDRlHEP97UOOR_4FMj9DzLH611o";
+
+    const LINE_URL = "https://lin.ee/wlTi2yO";
+
+    function escapeHTML(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
-  }
-}
 
+    function ordinal(n) {
+      const s = ["th", "st", "nd", "rd"];
+      const v = n % 100;
+      return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    }
 
-/* ------------------------------
-   Helpers
--------------------------------- */
+    function parseDate(dateString) {
+      if (!dateString) return null;
 
-function escapeHTML(str) {
+      const parts = dateString.split("-");
 
-  return String(str || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+      return new Date(
+        Number(parts[0]),
+        Number(parts[1]) - 1,
+        Number(parts[2])
+      );
+    }
 
+    function formatChineseDate(dateString) {
+      const d = parseDate(dateString);
 
-function parseDate(dateString) {
+      if (!d) return "";
 
-  if (!dateString) return null;
+      return (
+        d.getFullYear() +
+        "年" +
+        (d.getMonth() + 1) +
+        "月" +
+        d.getDate() +
+        "日"
+      );
+    }
 
-  const parts = dateString.split("-");
+    function formatChineseShortDate(dateString) {
+      const d = parseDate(dateString);
 
-  return {
-    year: Number(parts[0]),
-    month: Number(parts[1]),
-    day: Number(parts[2])
-  };
-}
+      if (!d) return "";
 
+      return (d.getMonth() + 1) + "月" + d.getDate() + "日";
+    }
 
-function chineseDate(dateString) {
+    function formatEnglishDate(dateString, useOrdinal = true) {
+      const d = parseDate(dateString);
 
-  const d = parseDate(dateString);
+      if (!d) return "";
 
-  if (!d) return "";
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ];
 
-  return `${d.year}年${d.month}月${d.day}日`;
-}
+      const day = useOrdinal ? ordinal(d.getDate()) : d.getDate();
 
+      return (
+        months[d.getMonth()] +
+        " " +
+        day +
+        ", " +
+        d.getFullYear()
+      );
+    }
 
-function englishOrdinal(day) {
+    function resetDynamicFields() {
+      schoolField.classList.remove("hidden");
+      usernameField.classList.remove("hidden");
+      passwordField.classList.remove("hidden");
+      languageField.classList.remove("hidden");
+      platformField.classList.remove("hidden");
 
-  if (day >= 11 && day <= 13) {
-    return day + "th";
-  }
+      startDateField.classList.add("hidden");
+      endDateField.classList.add("hidden");
+      studentCountField.classList.add("hidden");
+      distributorField.classList.add("hidden");
 
-  switch (day % 10) {
-    case 1: return day + "st";
-    case 2: return day + "nd";
-    case 3: return day + "rd";
-    default: return day + "th";
-  }
-}
+      schoolLabel.textContent = "School Name";
 
+      startDateLabel.textContent = "Start Date";
+      endDateLabel.textContent = "End Date";
+      studentCountLabel.textContent = "Number of Students";
+    }
 
-function englishDate(dateString) {
+    function updateEmailTypeOptions() {
+      const current = emailType.value;
 
-  const d = parseDate(dateString);
+      if (accountType.value === "teacher") {
+        emailType.innerHTML =
+          '<option value="new">New User</option>';
+      } else {
+        emailType.innerHTML = `
+          <option value="new">New User</option>
+          <option value="renewal">Renewal</option>
+          <option value="trial">Trial</option>
+          <option value="expiry">Expiry Reminder</option>
+        `;
 
-  if (!d) return "";
+        const validValues = [
+          "new",
+          "renewal",
+          "trial",
+          "expiry"
+        ];
 
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ];
+        if (validValues.includes(current)) {
+          emailType.value = current;
+        }
+      }
 
-  return `${months[d.month - 1]} ${englishOrdinal(d.day)}, ${d.year}`;
-}
+      updateFields();
+    }
 
+    function updateFields() {
+      resetDynamicFields();
 
-function chineseShortDate(dateString) {
+      const account = accountType.value;
+      const type = emailType.value;
 
-  const d = parseDate(dateString);
+      if (account === "teacher") {
+        schoolField.classList.add("hidden");
 
-  if (!d) return "";
+        startDateField.classList.add("hidden");
+        endDateField.classList.add("hidden");
+        studentCountField.classList.add("hidden");
 
-  return `${d.month}月${d.day}日`;
-}
+        passwordField.classList.remove("hidden");
+        platformField.classList.remove("hidden");
 
+        return;
+      }
 
-function zhLoginPlatformText() {
+      if (type === "new") {
+        startDateField.classList.remove("hidden");
+        endDateField.classList.remove("hidden");
+        studentCountField.classList.remove("hidden");
 
-  if (document.getElementById("parentPlatform").value === "yes") {
+        startDateLabel.textContent = "Start Date (Optional)";
+        endDateLabel.textContent = "End Date (Optional)";
+        studentCountLabel.textContent =
+          "Number of Students (Optional)";
 
-    return `
-      <p>
-        若您的學校有使用親師生平台，請使用親師生平台登入。
-      </p>
-    `;
-  }
+        passwordField.classList.remove("hidden");
+      }
 
-  return "";
-}
+      if (type === "renewal") {
+        passwordField.classList.add("hidden");
 
+        startDateField.classList.remove("hidden");
+        endDateField.classList.remove("hidden");
+        studentCountField.classList.remove("hidden");
 
-function enLoginPlatformText() {
+        startDateLabel.textContent = "Start Date";
+        endDateLabel.textContent = "End Date";
+        studentCountLabel.textContent = "Number of Students";
+      }
 
-  if (document.getElementById("parentPlatform").value === "yes") {
+      if (type === "trial") {
+        startDateField.classList.remove("hidden");
+        endDateField.classList.remove("hidden");
+        studentCountField.classList.remove("hidden");
 
-    return `
-      <p>
+        startDateLabel.textContent = "Trial Start Date";
+        endDateLabel.textContent = "Trial End Date";
+        studentCountLabel.textContent =
+          "Number of Trial Students";
+
+        passwordField.classList.remove("hidden");
+
+        if (!studentCount.value) {
+          studentCount.value = 30;
+        }
+      }
+
+      if (type === "expiry") {
+        schoolLabel.textContent = "School / Recipient Name";
+
+        usernameField.classList.add("hidden");
+        passwordField.classList.add("hidden");
+        startDateField.classList.add("hidden");
+        studentCountField.classList.add("hidden");
+        platformField.classList.add("hidden");
+
+        endDateField.classList.remove("hidden");
+        endDateLabel.textContent = "Expiry Date";
+
+        distributorField.classList.remove("hidden");
+
+        languageField.classList.remove("hidden");
+      }
+    }
+
+    function chinesePlatformLine() {
+      if (parentPlatform.value !== "yes") {
+        return "";
+      }
+
+      return `
+        若您的學校有使用親師生平台，請使用親師生平台登入。<br>
+      `;
+    }
+
+    function englishPlatformLine() {
+      if (parentPlatform.value !== "yes") {
+        return "";
+      }
+
+      return `
         If your school uses the Parent-Teacher-Student Platform,
-        please log in through that platform.
-      </p>
-    `;
-  }
-
-  return "";
-}
-
-
-/* ------------------------------
-   Resource Blocks
--------------------------------- */
-
-const zhAdminResources = `
-  <p>
-    <strong>使用指南</strong><br>
-    為了幫助您快速上手，我們提供了以下資源：<br>
-
-    <a href="https://docs.google.com/presentation/d/13_5qgyYasrEOL3iHBjlA_eco9A534HUNnLF2z04cS00/edit#slide=id.g14b48c14b97_0_51">
-      管理員指南
-    </a>
-    – 了解學生和課程名單的管理方法。<br>
-
-    <a href="https://docs.google.com/presentation/d/12MUJ3ydnmGEDIFYlFw51e_pyJQ4OWc5Rc1oUA2kiNcg/edit#slide=id.gc6f80d1ff_0_0">
-      教師使用方式
-    </a>
-    – 探索教師如何在課堂中運用 Sensay。<br>
-
-    <a href="https://docs.google.com/presentation/d/1r9S-0-pFMYv7819QPVongP0waYqmnLJYkOvg-JVWJKM/edit#slide=id.gc6f80d1ff_0_0">
-      學生使用方式
-    </a>
-    – 瞭解學生在 Sensay 平台上的操作流程。<br>
-
-    您也可以透過我們的教學影片進一步瞭解 Sensay 的功能：
-    <a href="https://www.youtube.com/playlist?list=PLnIV4hsDRlHErCZ9A6gPI9FWGLyyQX_qZ">
-      在 YouTube 上觀看
-    </a>。
-  </p>
-`;
-
-
-const zhTeacherResources = `
-  <p>
-    <strong>使用指南</strong><br>
-    為了幫助您快速上手，我們提供了以下資源：<br>
-
-    <a href="https://docs.google.com/presentation/d/12MUJ3ydnmGEDIFYlFw51e_pyJQ4OWc5Rc1oUA2kiNcg/edit#slide=id.gc6f80d1ff_0_0">
-      教師使用方式
-    </a>
-    – 探索教師如何在課堂中運用 Sensay。<br>
-
-    <a href="https://docs.google.com/presentation/d/1r9S-0-pFMYv7819QPVongP0waYqmnLJYkOvg-JVWJKM/edit#slide=id.gc6f80d1ff_0_0">
-      學生使用方式
-    </a>
-    – 瞭解學生在 Sensay 平台上的操作流程。<br>
-
-    您也可以透過我們的教學影片進一步瞭解 Sensay 的功能：
-    <a href="https://www.youtube.com/playlist?list=PLnIV4hsDRlHErCZ9A6gPI9FWGLyyQX_qZ">
-      在 YouTube 上觀看
-    </a>。
-  </p>
-`;
-
-
-const enAdminResources = `
-  <p>
-    <strong>Support Resources</strong>:<br>
-    To help you get started, we’ve provided several resources below:<br>
-
-    <a href="https://docs.google.com/presentation/d/1zOClZxs7c9r_qEzqkhLEMy0JNmYnT7lrf0IQKPKeKAY/edit?usp=sharing">
-      Administrator Guide
-    </a>
-    – Learn how to manage student and class lists.<br>
-
-    <a href="https://docs.google.com/presentation/d/1XuaAHCSNvGIDCXifPD_17CmXi0-Jja27OQr7v0iCzTo/edit?usp=sharing">
-      Teacher Guide
-    </a>
-    – Explore how teachers can integrate Sensay into their classes.<br>
-
-    <a href="https://docs.google.com/presentation/d/1YUt_Jd9sFAToXCd0Xv32KRsEWRRI8WfMw0PAQwdz7t4/edit?usp=sharing">
-      Student Guide
-    </a>
-    – Understand how students will interact with Sensay.<br>
-
-    For additional support, feel free to watch our tutorial videos on Sensay's features:
-    <a href="https://www.youtube.com/watch?v=7R25LbGwk5U&list=PLnIV4hsDRlHEP97UOOR_4FMj9DzLH611o">
-      Watch on YouTube
-    </a>.
-  </p>
-`;
-
-
-const enTeacherResources = `
-  <p>
-    <strong>Support Resources</strong>:<br>
-    To help you get started, we’ve provided several resources below:<br>
-
-    <a href="https://docs.google.com/presentation/d/1XuaAHCSNvGIDCXifPD_17CmXi0-Jja27OQr7v0iCzTo/edit?usp=sharing">
-      Teacher Guide
-    </a>
-    – Explore how teachers can integrate Sensay into their classes.<br>
-
-    <a href="https://docs.google.com/presentation/d/1YUt_Jd9sFAToXCd0Xv32KRsEWRRI8WfMw0PAQwdz7t4/edit?usp=sharing">
-      Student Guide
-    </a>
-    – Understand how students will interact with Sensay.<br>
-
-    For additional support, feel free to watch our tutorial videos on Sensay's features:
-    <a href="https://youtube.com/playlist?list=PLnIV4hsDRlHFwQEOltfkHJ93b3JifrvE6">
-      Watch on YouTube
-    </a>.
-  </p>
-`;
-
-
-/* ------------------------------
-   Generate
--------------------------------- */
-
-function generateEmail() {
-
-  const account = accountType.value;
-  const type = emailType.value;
-
-  const school = escapeHTML(
-    document.getElementById("schoolName").value.trim()
-  );
-
-  const username = escapeHTML(
-    document.getElementById("username").value.trim()
-  );
-
-  const password = escapeHTML(
-    document.getElementById("password").value.trim()
-  );
-
-  const startDate =
-    document.getElementById("startDate").value;
-
-  const endDate =
-    document.getElementById("endDate").value;
-
-  const studentCount = escapeHTML(
-    document.getElementById("studentCount").value
-  );
-
-  const language =
-    document.getElementById("language").value;
-
-  const distributor =
-    document.getElementById("distributor").value;
-
-
-  let subject = "";
-  let body = "";
-
-
-  /* =========================
-     EXPIRY REMINDER
-  ========================== */
-
-  if (account === "admin" && type === "expiry") {
-
-    if (!school || !endDate) {
-      alert("請填寫 School / Recipient Name 與到期日期。");
-      return;
+        please log in through that platform.<br>
+      `;
     }
 
-    subject =
-      `Sensay 通知：您的訂閱將於${chineseShortDate(endDate)}到期 Subscription Expiry Reminder`;
+    function chineseSignature() {
+      return `
+        <div class="signature">
+          <p>--</p>
 
+          <p>
+            <strong>Wishing you a wonderful day!</strong><br>
+            <strong>Sensay 團隊祝您有美好的一天!</strong>
+          </p>
 
-    const zhRenewalText =
-      distributor === "yes"
-        ? `
-          如果您希望繼續使用Sensay，請聯繫我們的經銷夥伴協助處理續訂事宜，
-          將非常樂意為您安排續訂並提供最新的訂閱價格資訊。
-        `
-        : `
-          如果您希望繼續使用Sensay，歡迎隨時聯繫我們進行續訂，
-          我們將非常樂意為您安排續訂事宜，並提供最新的訂閱價格資訊。
-        `;
+          <p>
+            <strong>電話: 02-6604-0012</strong><br>
+            <strong>
+              LINE官方帳號ID
+              <a href="${LINE_URL}" target="_blank">@sensay</a>
+            </strong>
+          </p>
 
+          <a href="https://www.oksensay.com/" target="_blank">
+            <img
+              src="${LOGO_URL}"
+              alt="Sensay"
+              class="signature-logo"
+            >
+          </a>
+        </div>
+      `;
+    }
 
-    const enRenewalText =
-      distributor === "yes"
-        ? `
-          If you wish to continue using Sensay, please contact our authorized distributor
-          to assist you with the renewal process. They will be more than happy to help
-          arrange the renewal and provide the latest pricing information.
-        `
-        : `
-          If you wish to continue using Sensay, please feel free to contact us to renew
-          your subscription. We will be more than happy to assist you with the renewal
-          process and provide the latest pricing information.
-        `;
+    function englishSignature() {
+      return `
+        <div class="signature">
+          <p>--</p>
 
+          <p>
+            <strong>Wishing you a wonderful day,</strong><br>
+            <strong>Sensay</strong>
+          </p>
 
-    body = `
+          <p>
+            <strong>
+              Email:
+              <a href="mailto:service@sensay.com">
+                service@sensay.com
+              </a>
+            </strong>
+          </p>
 
-      <p><strong>${school}</strong></p>
+          <a href="https://www.oksensay.com/" target="_blank">
+            <img
+              src="${LOGO_URL}"
+              alt="Sensay"
+              class="signature-logo"
+            >
+          </a>
+        </div>
+      `;
+    }
 
-      <p>
-        您好，感謝您使用 Sensay！貼心提醒您，您的訂閱將於${chineseDate(endDate)}到期。
-      </p>
+    function getSignature() {
+      if (signature.value === "zh") {
+        return chineseSignature();
+      }
 
-      <p>${zhRenewalText}</p>
+      if (signature.value === "en") {
+        return englishSignature();
+      }
 
-      <p>
-        如果您已經完成續訂或提前終止服務，請忽略此通知，無需採取任何行動。
-      </p>
+      return "";
+    }
 
-      <p>
-        同時，我們非常希望了解您對Sensay使用的感受，任何反饋或建議都對我們非常寶貴，
-        並將幫助我們進步。如果您有任何意見或想法，歡迎回信告訴我們。
-      </p>
+    function chineseAdminResources() {
+      return `
+        <p>
+          <strong>使用指南</strong><br>
+          為了幫助您快速上手，我們提供了以下資源：<br>
 
-      <p>
-        感謝您一直以來的支持，期待能夠繼續為您提供服務！
-      </p>
+          <a href="${ZH_ADMIN_GUIDE}" target="_blank">
+            管理員指南
+          </a>
+          – 了解學生和課程名單的管理方法。<br>
 
-      <p>
-        Thank you for using Sensay! A friendly reminder that your subscription
-        will expire on ${englishDate(endDate)}.
-      </p>
+          <a href="${ZH_TEACHER_GUIDE}" target="_blank">
+            教師使用方式
+          </a>
+          – 探索教師如何在課堂中運用 Sensay。<br>
 
-      <p>${enRenewalText}</p>
+          <a href="${ZH_STUDENT_GUIDE}" target="_blank">
+            學生使用方式
+          </a>
+          – 瞭解學生在 Sensay 平台上的操作流程。<br>
 
-      <p>
-        If you have already renewed your subscription or terminated it in advance,
-        please disregard this notification. No further action is required.
-      </p>
+          您也可以透過我們的教學影片進一步瞭解 Sensay 的功能：
+          <a href="${ZH_YOUTUBE}" target="_blank">
+            在 YouTube 上觀看
+          </a>。
+        </p>
+      `;
+    }
 
-      <p>
-        Additionally, we would love to hear your thoughts on using Sensay.
-        Any feedback or suggestions are greatly appreciated and will help us improve.
-        If you have any comments or thoughts, please feel free to reply and let us know.
-      </p>
+    function chineseTeacherResources() {
+      return `
+        <p>
+          <strong>使用指南</strong><br>
+          為了幫助您快速上手，我們提供了以下資源：<br>
 
-      <p>
-        Thank you for your continued support, and we wish you great success
-        and enjoyment in your teaching!
-      </p>
-    `;
+          <a href="${ZH_TEACHER_GUIDE}" target="_blank">
+            教師使用方式
+          </a>
+          – 探索教師如何在課堂中運用 Sensay。<br>
 
-    showResult(subject, body);
-    return;
-  }
+          <a href="${ZH_STUDENT_GUIDE}" target="_blank">
+            學生使用方式
+          </a>
+          – 瞭解學生在 Sensay 平台上的操作流程。<br>
 
+          您也可以透過我們的教學影片進一步瞭解 Sensay 的功能：
+          <a href="${ZH_YOUTUBE}" target="_blank">
+            在 YouTube 上觀看
+          </a>。
+        </p>
+      `;
+    }
 
-  /* =========================
-     VALIDATION
-  ========================== */
+    function englishAdminResources() {
+      return `
+        <p>
+          <strong>Support Resources:</strong><br>
+          To help you get started, we’ve provided several resources below:<br>
 
-  if (account === "admin" && !school) {
-    alert("請填寫 School Name。");
-    return;
-  }
+          <a href="${EN_ADMIN_GUIDE}" target="_blank">
+            Administrator Guide
+          </a>
+          – Learn how to manage student and class lists.<br>
 
-  if (!username) {
-    alert("請填寫 User Name。");
-    return;
-  }
+          <a href="${EN_TEACHER_GUIDE}" target="_blank">
+            Teacher Guide
+          </a>
+          – Explore how teachers can integrate Sensay into their classes.<br>
 
-  if ((type === "new" || type === "trial") && !password) {
-    alert("請填寫 Password。");
-    return;
-  }
+          <a href="${EN_STUDENT_GUIDE}" target="_blank">
+            Student Guide
+          </a>
+          – Understand how students will interact with Sensay.<br>
 
+          For additional support, feel free to watch our tutorial videos
+          on Sensay's features:
+          <a href="${EN_ADMIN_YOUTUBE}" target="_blank">
+            Watch on YouTube
+          </a>.
+        </p>
+      `;
+    }
 
-  /* =========================
-     TEACHER NEW USER
-  ========================== */
+    function englishTeacherResources() {
+      return `
+        <p>
+          <strong>Support Resources:</strong><br>
+          To help you get started, we’ve provided several resources below:<br>
 
-  if (account === "teacher") {
+          <a href="${EN_TEACHER_GUIDE}" target="_blank">
+            Teacher Guide
+          </a>
+          – Explore how teachers can integrate Sensay into their classes.<br>
 
-    if (language === "zh") {
+          <a href="${EN_STUDENT_GUIDE}" target="_blank">
+            Student Guide
+          </a>
+          – Understand how students will interact with Sensay.<br>
 
-      subject =
+          For additional support, feel free to watch our tutorial videos
+          on Sensay's features:
+          <a href="${EN_TEACHER_YOUTUBE}" target="_blank">
+            Watch on YouTube
+          </a>.
+        </p>
+      `;
+    }
+
+    function chineseAdminSubscriptionBlock(type) {
+      const start = startDate.value;
+      const end = endDate.value;
+      const students = studentCount.value;
+
+      if (!start && !end && !students) {
+        return "";
+      }
+
+      const title =
+        type === "trial" ? "試用資訊" : "授權資訊";
+
+      let lines = [];
+
+      if (start) {
+        lines.push(
+          (type === "trial" ? "試用啟用日期：" : "啟用日期：") +
+          formatChineseDate(start)
+        );
+      }
+
+      if (end) {
+        lines.push(
+          (type === "trial" ? "試用到期日期：" : "到期日期：") +
+          formatChineseDate(end)
+        );
+      }
+
+      if (students) {
+        lines.push(
+          (type === "trial" ? "試用學生人數：" : "學生人數：") +
+          escapeHTML(students)
+        );
+      }
+
+      return `
+        <p>
+          <strong>${title}</strong><br>
+          ${lines.join("<br>")}
+        </p>
+      `;
+    }
+
+    function englishAdminSubscriptionBlock(type) {
+      const start = startDate.value;
+      const end = endDate.value;
+      const students = studentCount.value;
+
+      if (!start && !end && !students) {
+        return "";
+      }
+
+      const title =
+        type === "trial"
+          ? "Trial Subscription Details:"
+          : "Subscription Details:";
+
+      let lines = [];
+
+      if (start) {
+        lines.push(
+          (type === "trial"
+            ? "Trial Start Date: "
+            : "Start Date: ") +
+          formatEnglishDate(start)
+        );
+      }
+
+      if (end) {
+        lines.push(
+          (type === "trial"
+            ? "Trial End Date: "
+            : "End Date: ") +
+          formatEnglishDate(end)
+        );
+      }
+
+      if (students) {
+        lines.push(
+          (type === "trial"
+            ? "Number of Trial Students: "
+            : "Number of Students: ") +
+          escapeHTML(students)
+        );
+      }
+
+      return `
+        <p>
+          <strong>${title}</strong><br>
+          ${lines.join("<br>")}
+        </p>
+      `;
+    }
+
+    function generateChineseTeacher() {
+      const safeUsername = escapeHTML(username.value.trim());
+      const safePassword = escapeHTML(password.value.trim());
+
+      const subject =
         "Sensay 教師帳號啟用通知 - 立即登入開始使用！";
 
-      body = `
-
+      const body = `
         <p>您好</p>
 
-        <p>歡迎使用 Sensay！</p>
+        <p>
+          歡迎使用 Sensay！
+        </p>
 
         <p>
-          您的教師帳號已成功建立，以下是您的登入資訊，
-          以及幫助您有效使用 Sensay 的指南和資源。
+          您的教師帳號已成功建立，以下是您的登入資訊，以及幫助您有效使用 Sensay 的指南和資源。
         </p>
 
         <p>
           <strong>帳號資訊</strong><br>
           用戶名：
-          <a href="mailto:${username}">
-            ${username}
+          <a href="mailto:${safeUsername}">
+            ${safeUsername}
           </a><br>
-
-          預設密碼：${password}
-          （請在首次登入後重設您的密碼）
+          預設密碼：${safePassword}（請在首次登入後重設您的密碼）
         </p>
 
         <p>
           <strong>登入連結</strong><br>
-          ${zhLoginPlatformText()}
+          ${chinesePlatformLine()}
           教師登入：
-          <a href="https://school.oksensay.com">
-            https://school.oksensay.com
+          <a href="${SCHOOL_LOGIN}" target="_blank">
+            ${SCHOOL_LOGIN}
           </a><br>
-
           學生登入：
-          <a href="https://learn.oksensay.com">
-            https://learn.oksensay.com
+          <a href="${STUDENT_LOGIN}" target="_blank">
+            ${STUDENT_LOGIN}
           </a>
         </p>
 
-        ${zhTeacherResources}
+        ${chineseTeacherResources()}
 
         <p>
-          如有任何疑問或需要更多協助，請隨時聯繫我們，祝教學愉快！
+          如有任何疑問或需要更多協助，請隨時聯繫我們，
+          祝教學愉快！
         </p>
+
+        ${getSignature()}
       `;
 
-    } else {
+      return { subject, body };
+    }
 
-      subject =
+    function generateEnglishTeacher() {
+      const safeUsername = escapeHTML(username.value.trim());
+      const safePassword = escapeHTML(password.value.trim());
+
+      const subject =
         "Your Sensay Teacher Account is Ready – Log In to Get Started!";
 
-      body = `
-
+      const body = `
         <p>Hello,</p>
 
         <p>
@@ -953,468 +1047,622 @@ function generateEmail() {
         </p>
 
         <p>
-          <strong>Account details</strong>:<br>
+          <strong>Account details:</strong><br>
           Username:
-          <a href="mailto:${username}">
-            ${username}
-          </a><br><br>
-
-          Default Password: ${password}
+          <a href="mailto:${safeUsername}">
+            ${safeUsername}
+          </a><br>
+          Default Password: ${safePassword}
           (Please reset your password after your first login)
         </p>
 
         <p>
-          <strong>Access links</strong>:<br>
-          ${enLoginPlatformText()}
+          <strong>Access links:</strong><br>
+          ${englishPlatformLine()}
           Teacher Login:
-          <a href="https://school.oksensay.com">
-            https://school.oksensay.com
+          <a href="${SCHOOL_LOGIN}" target="_blank">
+            ${SCHOOL_LOGIN}
           </a><br>
-
           Student Login:
-          <a href="https://learn.oksensay.com">
-            https://learn.oksensay.com
+          <a href="${STUDENT_LOGIN}" target="_blank">
+            ${STUDENT_LOGIN}
           </a>
         </p>
 
-        ${enTeacherResources}
+        ${englishTeacherResources()}
 
         <p>
           If you have any questions or need further assistance,
           feel free to reach out. We’re here to support you!
         </p>
+
+        ${getSignature()}
       `;
+
+      return { subject, body };
     }
 
-    showResult(subject, body);
-    return;
-  }
+    function generateChineseAdmin(type) {
+      const safeSchool = escapeHTML(schoolName.value.trim());
+      const safeUsername = escapeHTML(username.value.trim());
+      const safePassword = escapeHTML(password.value.trim());
 
+      let subject = "";
 
-  /* =========================
-     ADMIN CHINESE
-  ========================== */
+      if (type === "renewal") {
+        subject =
+          "Sensay 管理員帳號續訂啟用通知 - 立即登入開始使用！";
+      } else {
+        subject =
+          "Sensay 管理員帳號啟用通知 - 立即登入開始使用！";
+      }
 
-  if (language === "zh") {
+      let intro = "";
 
-    if (type === "renewal") {
-
-      subject =
-        "Sensay 管理員帳號續訂啟用通知 - 立即登入開始使用！";
-
-      let subscriptionInfo = "";
-
-      if (startDate || endDate || studentCount) {
-
-        subscriptionInfo = `
+      if (type === "renewal") {
+        intro = `
           <p>
-            <strong>授權資訊</strong><br>
-            ${startDate ? `啟用日期：${chineseDate(startDate)}<br>` : ""}
-            ${endDate ? `到期日期：${chineseDate(endDate)}<br>` : ""}
-            ${studentCount ? `學生人數：${studentCount}` : ""}
+            您的帳號已成功續訂，以下是更新後的啟用資訊：
+          </p>
+        `;
+      } else {
+        intro = `
+          <p>
+            您的管理員帳號已成功建立，以下是您的登入資訊，
+            以及幫助您有效使用 Sensay 的指南和資源。
           </p>
         `;
       }
 
-      body = `
+      let accountDetails = "";
 
-        <p><strong>${school}</strong></p>
+      if (type === "renewal") {
+        accountDetails = `
+          <p>
+            <strong>帳號資訊</strong><br>
+            用戶名：
+            <a href="mailto:${safeUsername}">
+              ${safeUsername}
+            </a><br>
+            密碼：請使用您原先的密碼登入
+          </p>
+        `;
+      } else {
+        accountDetails = `
+          <p>
+            <strong>帳號資訊</strong><br>
+            用戶名：
+            <a href="mailto:${safeUsername}">
+              ${safeUsername}
+            </a><br>
+            預設密碼：${safePassword}（請在首次登入後重設您的密碼）
+          </p>
+        `;
+      }
 
-        <p>您好，歡迎使用 Sensay！</p>
+      const loginLabel =
+        type === "renewal" ? "教師登入" : "管理員登入";
 
+      const body = `
         <p>
-          您的帳號已成功續訂，以下是更新後的啟用資訊：
+          <strong>${safeSchool}</strong> 您好
         </p>
 
         <p>
-          <strong>帳號資訊</strong><br>
-          用戶名：
-          <a href="mailto:${username}">
-            ${username}
-          </a><br>
-
-          密碼：請使用您原先的密碼登入
+          歡迎使用 Sensay！
         </p>
 
-        ${subscriptionInfo}
+        ${intro}
+
+        ${accountDetails}
+
+        ${chineseAdminSubscriptionBlock(type)}
 
         <p>
           <strong>登入連結</strong><br>
-          ${zhLoginPlatformText()}
-
-          教師登入：
-          <a href="https://school.oksensay.com">
-            https://school.oksensay.com
+          ${chinesePlatformLine()}
+          ${loginLabel}：
+          <a href="${SCHOOL_LOGIN}" target="_blank">
+            ${SCHOOL_LOGIN}
           </a><br>
-
           學生登入：
-          <a href="https://learn.oksensay.com">
-            https://learn.oksensay.com
+          <a href="${STUDENT_LOGIN}" target="_blank">
+            ${STUDENT_LOGIN}
           </a>
         </p>
 
-        ${zhAdminResources}
+        ${chineseAdminResources()}
 
         <p>
-          如有任何疑問或需要更多協助，請隨時聯繫我們，祝教學愉快！
+          如有任何疑問或需要更多協助，請隨時聯繫我們，
+          祝教學愉快！
         </p>
+
+        ${getSignature()}
       `;
 
-    } else {
-
-      subject =
-        "Sensay 管理員帳號啟用通知 - 立即登入開始使用！";
-
-      let subscriptionInfo = "";
-
-      if (type === "trial") {
-
-        subscriptionInfo = `
-          <p>
-            <strong>試用資訊</strong><br>
-            ${startDate ? `試用啟用日期：${chineseDate(startDate)}<br>` : ""}
-            ${endDate ? `試用到期日期：${chineseDate(endDate)}<br>` : ""}
-            ${studentCount ? `試用學生人數：${studentCount}` : ""}
-          </p>
-        `;
-
-      } else if (startDate || endDate || studentCount) {
-
-        subscriptionInfo = `
-          <p>
-            <strong>授權資訊</strong><br>
-            ${startDate ? `啟用日期：${chineseDate(startDate)}<br>` : ""}
-            ${endDate ? `到期日期：${chineseDate(endDate)}<br>` : ""}
-            ${studentCount ? `學生人數：${studentCount}` : ""}
-          </p>
-        `;
-      }
-
-      body = `
-
-        <p><strong>${school}</strong> 您好</p>
-
-        <p>歡迎使用 Sensay！</p>
-
-        <p>
-          您的管理員帳號已成功建立，以下是您的登入資訊，
-          以及幫助您有效使用 Sensay 的指南和資源。
-        </p>
-
-        <p>
-          <strong>帳號資訊</strong><br>
-          用戶名：
-          <a href="mailto:${username}">
-            ${username}
-          </a><br>
-
-          預設密碼：${password}
-          （請在首次登入後重設您的密碼）
-        </p>
-
-        ${subscriptionInfo}
-
-        <p>
-          <strong>登入連結</strong><br>
-          ${zhLoginPlatformText()}
-
-          管理員登入：
-          <a href="https://school.oksensay.com">
-            https://school.oksensay.com
-          </a><br>
-
-          學生登入：
-          <a href="https://learn.oksensay.com">
-            https://learn.oksensay.com
-          </a>
-        </p>
-
-        ${zhAdminResources}
-
-        <p>
-          如有任何疑問或需要更多協助，請隨時聯繫我們，祝教學愉快！
-        </p>
-      `;
+      return { subject, body };
     }
 
+    function generateEnglishAdmin(type) {
+      const safeSchool = escapeHTML(schoolName.value.trim());
+      const safeUsername = escapeHTML(username.value.trim());
+      const safePassword = escapeHTML(password.value.trim());
 
-  /* =========================
-     ADMIN ENGLISH
-  ========================== */
+      let subject = "";
 
-  } else {
+      if (type === "renewal") {
+        subject =
+          "Your Sensay Admin Account Has Been Renewed";
+      } else {
+        subject =
+          "Your Sensay Admin Account is Ready – Log In to Get Started!";
+      }
 
-    if (type === "renewal") {
+      let intro = "";
 
-      subject =
-        "Your Sensay Admin Account Has Been Renewed – Log In to Continue!";
-
-      let subscriptionInfo = "";
-
-      if (startDate || endDate || studentCount) {
-
-        subscriptionInfo = `
+      if (type === "renewal") {
+        intro = `
           <p>
-            <strong>Subscription Details</strong>:<br>
-            ${startDate ? `Start Date: ${englishDate(startDate)}<br>` : ""}
-            ${endDate ? `End Date: ${englishDate(endDate)}<br>` : ""}
-            ${studentCount ? `Student Seats: ${studentCount}` : ""}
+            Your administrator account has been successfully renewed.
+            Below, you'll find your updated subscription information
+            and access details.
+          </p>
+        `;
+      } else {
+        intro = `
+          <p>
+            Welcome to Sensay! Your administrator account has been
+            successfully created. Below, you'll find your login details,
+            as well as guides and resources to help you navigate and
+            utilize Sensay effectively.
           </p>
         `;
       }
 
-      body = `
+      let accountDetails = "";
 
-        <p>Hello <strong>${school}</strong>,</p>
+      if (type === "renewal") {
+        accountDetails = `
+          <p>
+            <strong>Account details:</strong><br>
+            Username:
+            <a href="mailto:${safeUsername}">
+              ${safeUsername}
+            </a><br>
+            Password: Please use your existing password to log in.
+          </p>
+        `;
+      } else {
+        accountDetails = `
+          <p>
+            <strong>Account details:</strong><br>
+            Username:
+            <a href="mailto:${safeUsername}">
+              ${safeUsername}
+            </a><br>
+            Password: ${safePassword}
+            (Please reset your password upon your first login)
+          </p>
+        `;
+      }
 
+      const body = `
         <p>
-          Welcome to Sensay! Your administrator account has been successfully renewed.
+          Hello <strong>${safeSchool}</strong>,
         </p>
 
-        <p>
-          Below, you'll find your updated account information,
-          as well as guides and resources to help you continue using Sensay effectively.
-        </p>
+        ${intro}
+
+        ${accountDetails}
+
+        ${englishAdminSubscriptionBlock(type)}
 
         <p>
-          <strong>Account details</strong>:<br>
-          Username:
-          <a href="mailto:${username}">
-            ${username}
-          </a><br>
-
-          Password: Please use your existing password to log in.
-        </p>
-
-        ${subscriptionInfo}
-
-        <p>
-          <strong>Access links</strong>:<br>
-          ${enLoginPlatformText()}
-
+          <strong>Access links:</strong><br>
+          ${englishPlatformLine()}
           Administrator Login:
-          <a href="https://school.oksensay.com">
-            https://school.oksensay.com
+          <a href="${SCHOOL_LOGIN}" target="_blank">
+            ${SCHOOL_LOGIN}
           </a><br>
-
           Student Login:
-          <a href="https://learn.oksensay.com">
-            https://learn.oksensay.com
+          <a href="${STUDENT_LOGIN}" target="_blank">
+            ${STUDENT_LOGIN}
           </a>
         </p>
 
-        ${enAdminResources}
+        ${englishAdminResources()}
 
         <p>
           If you have any questions or need further assistance,
           feel free to reach out. We’re here to support you!
         </p>
+
+        ${getSignature()}
       `;
 
-    } else {
+      return { subject, body };
+    }
 
-      subject =
-        "Your Sensay Admin Account is Ready – Log In to Get Started!";
+    function generateChineseExpiry() {
+      const recipient = escapeHTML(schoolName.value.trim());
+      const expiry = endDate.value;
 
-      let subscriptionInfo = "";
+      const fullDate = formatChineseDate(expiry);
+      const shortDate = formatChineseShortDate(expiry);
 
-      if (type === "trial") {
+      const subject =
+        `Sensay 通知：您的訂閱將於${shortDate}到期`;
 
-        subscriptionInfo = `
+      let renewalParagraph = "";
+
+      if (distributor.value === "yes") {
+        renewalParagraph = `
           <p>
-            <strong>Trial Subscription Details</strong>:<br>
-            ${startDate ? `Trial Subscription Start Date: ${englishDate(startDate)}<br>` : ""}
-            ${endDate ? `Trial Subscription End Date: ${englishDate(endDate)}<br>` : ""}
-            ${studentCount ? `Trial Student Seats: ${studentCount}` : ""}
+            如果您希望繼續使用 Sensay，請聯繫我們的經銷夥伴協助處理續訂事宜，
+            將非常樂意為您安排續訂並提供最新的訂閱價格資訊。
           </p>
         `;
-
-      } else if (startDate || endDate || studentCount) {
-
-        subscriptionInfo = `
+      } else {
+        renewalParagraph = `
           <p>
-            <strong>Subscription Details</strong>:<br>
-            ${startDate ? `Start Date: ${englishDate(startDate)}<br>` : ""}
-            ${endDate ? `End Date: ${englishDate(endDate)}<br>` : ""}
-            ${studentCount ? `Student Seats: ${studentCount}` : ""}
+            如果您希望繼續使用 Sensay，歡迎隨時聯繫我們進行續訂，
+            我們將非常樂意為您安排續訂事宜，並提供最新的訂閱價格資訊。
           </p>
         `;
       }
 
-      body = `
-
-        <p>Hello <strong>${school}</strong>,</p>
-
+      const body = `
         <p>
-          Welcome to Sensay! Your administrator account has been successfully created.
-          Below, you'll find your login details, as well as guides and resources
-          to help you navigate and utilize Sensay effectively.
+          <strong>${recipient}</strong> 您好，
         </p>
 
         <p>
-          <strong>Account details</strong>:<br>
-          Username:
-          <a href="mailto:${username}">
-            ${username}
-          </a><br><br>
-
-          Password: ${password}
-          (Please reset your password upon your first login)
+          感謝您使用 Sensay！貼心提醒您，您的訂閱將於
+          <strong>${fullDate}</strong> 到期。
         </p>
 
-        ${subscriptionInfo}
+        ${renewalParagraph}
 
         <p>
-          <strong>Access links</strong>:<br>
-          ${enLoginPlatformText()}
-
-          Administrator Login:
-          <a href="https://school.oksensay.com">
-            https://school.oksensay.com
-          </a><br>
-
-          Student Login:
-          <a href="https://learn.oksensay.com">
-            https://learn.oksensay.com
-          </a>
+          如果您已經完成續訂或提前終止服務，請忽略此通知，
+          無需採取任何行動。
         </p>
-
-        ${enAdminResources}
 
         <p>
-          If you have any questions or need further assistance,
-          feel free to reach out. We’re here to support you!
+          同時，我們非常希望了解您對 Sensay 使用的感受，
+          任何反饋或建議都對我們非常寶貴，並將幫助我們進步。
+          如果您有任何意見或想法，歡迎回信告訴我們。
         </p>
+
+        <p>
+          感謝您一直以來的支持，期待能夠繼續為您提供服務！
+        </p>
+
+        ${getSignature()}
       `;
+
+      return { subject, body };
     }
-  }
 
-  showResult(subject, body);
-}
+    function generateEnglishExpiry() {
+      const recipient = escapeHTML(schoolName.value.trim());
+      const expiry = endDate.value;
 
+      const fullDate = formatEnglishDate(expiry);
+      const subjectDate = formatEnglishDate(expiry, false);
 
-/* ------------------------------
-   Show Results
--------------------------------- */
+      const subject =
+        `Sensay Subscription Expiry Reminder – ${subjectDate}`;
 
-function showResult(subject, body) {
+      let renewalParagraph = "";
 
-  document.getElementById("subjectOutput").textContent =
-    subject;
+      if (distributor.value === "yes") {
+        renewalParagraph = `
+          <p>
+            If you wish to continue using Sensay, please contact our
+            authorized distributor to assist you with the renewal process.
+            They will be more than happy to help arrange the renewal and
+            provide the latest pricing information.
+          </p>
+        `;
+      } else {
+        renewalParagraph = `
+          <p>
+            If you wish to continue using Sensay, please feel free to
+            contact us to renew your subscription. We will be more than
+            happy to assist you with the renewal process and provide the
+            latest pricing information.
+          </p>
+        `;
+      }
 
-  document.getElementById("emailOutput").innerHTML =
-    body;
+      const body = `
+        <p>
+          Hello <strong>${recipient}</strong>,
+        </p>
 
-  document
-    .getElementById("resultSection")
-    .classList.add("show");
+        <p>
+          Thank you for using Sensay! A friendly reminder that your
+          subscription will expire on <strong>${fullDate}</strong>.
+        </p>
 
-  document
-    .getElementById("resultSection")
-    .scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-}
+        ${renewalParagraph}
 
+        <p>
+          If you have already renewed your subscription or terminated it
+          in advance, please disregard this notification.
+          No further action is required.
+        </p>
 
-/* ------------------------------
-   Copy Subject
--------------------------------- */
+        <p>
+          Additionally, we would love to hear your thoughts on using Sensay.
+          Any feedback or suggestions are greatly appreciated and will help
+          us improve. If you have any comments or thoughts, please feel free
+          to reply and let us know.
+        </p>
 
-async function copySubject(button) {
+        <p>
+          Thank you for your continued support, and we wish you great
+          success and enjoyment in your teaching!
+        </p>
 
-  const subject =
-    document.getElementById("subjectOutput").textContent;
+        ${getSignature()}
+      `;
 
-  await navigator.clipboard.writeText(subject);
+      return { subject, body };
+    }
 
-  showCopied(button);
-}
+    function validateForm() {
+      const account = accountType.value;
+      const type = emailType.value;
 
+      if (account === "teacher") {
+        if (!username.value.trim()) {
+          alert("Please enter a username.");
+          return false;
+        }
 
-/* ------------------------------
-   Copy Rich Email
--------------------------------- */
+        if (!password.value.trim()) {
+          alert("Please enter a password.");
+          return false;
+        }
 
-async function copyEmail(button) {
+        return true;
+      }
 
-  const emailElement =
-    document.getElementById("emailOutput");
+      if (!schoolName.value.trim()) {
+        alert(
+          type === "expiry"
+            ? "Please enter a school or recipient name."
+            : "Please enter a school name."
+        );
+        return false;
+      }
 
-  const html = emailElement.innerHTML;
-  const text = emailElement.innerText;
+      if (type === "expiry") {
+        if (!endDate.value) {
+          alert("Please select an expiry date.");
+          return false;
+        }
 
-  try {
+        return true;
+      }
 
-    const clipboardItem = new ClipboardItem({
+      if (!username.value.trim()) {
+        alert("Please enter a username.");
+        return false;
+      }
 
-      "text/html":
-        new Blob(
-          [html],
-          { type: "text/html" }
-        ),
+      if (type === "new" || type === "trial") {
+        if (!password.value.trim()) {
+          alert("Please enter a password.");
+          return false;
+        }
+      }
 
-      "text/plain":
-        new Blob(
-          [text],
-          { type: "text/plain" }
-        )
+      if (type === "renewal") {
+        if (
+          !startDate.value ||
+          !endDate.value ||
+          !studentCount.value
+        ) {
+          alert(
+            "Please enter the start date, end date, and number of students."
+          );
+          return false;
+        }
+      }
 
-    });
+      if (type === "trial") {
+        if (
+          !startDate.value ||
+          !endDate.value ||
+          !studentCount.value
+        ) {
+          alert(
+            "Please enter the trial start date, trial end date, and number of trial students."
+          );
+          return false;
+        }
+      }
 
-    await navigator.clipboard.write([clipboardItem]);
+      return true;
+    }
 
-  } catch (error) {
+    function generateEmail() {
+      copyStatus.textContent = "";
 
-    await navigator.clipboard.writeText(text);
-  }
+      if (!validateForm()) {
+        return;
+      }
 
-  showCopied(button);
-}
+      const account = accountType.value;
+      const type = emailType.value;
+      const lang = language.value;
 
+      let generated;
 
-/* ------------------------------
-   Copy Feedback
--------------------------------- */
+      if (type === "expiry") {
+        generated =
+          lang === "zh"
+            ? generateChineseExpiry()
+            : generateEnglishExpiry();
+      } else if (account === "teacher") {
+        generated =
+          lang === "zh"
+            ? generateChineseTeacher()
+            : generateEnglishTeacher();
+      } else {
+        generated =
+          lang === "zh"
+            ? generateChineseAdmin(type)
+            : generateEnglishAdmin(type);
+      }
 
-function showCopied(button) {
+      subjectOutput.textContent = generated.subject;
+      emailOutput.innerHTML = generated.body;
 
-  const original =
-    button.textContent;
+      resultCard.classList.add("show");
 
-  button.textContent = "Copied!";
-  button.classList.add("copied");
+      resultCard.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
 
-  setTimeout(() => {
+    async function copySubject() {
+      const subject = subjectOutput.textContent;
 
-    button.textContent = original;
-    button.classList.remove("copied");
+      if (!subject) return;
 
-  }, 1500);
-}
+      try {
+        await navigator.clipboard.writeText(subject);
+        copyStatus.textContent = "Subject copied.";
+      } catch (error) {
+        fallbackCopyText(subject);
+        copyStatus.textContent = "Subject copied.";
+      }
+    }
 
+    function fallbackCopyText(text) {
+      const textarea = document.createElement("textarea");
 
-/* ------------------------------
-   Events
--------------------------------- */
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
 
-accountType.addEventListener(
-  "change",
-  updateEmailTypes
-);
+      document.body.appendChild(textarea);
 
-emailType.addEventListener(
-  "change",
-  updateFields
-);
+      textarea.focus();
+      textarea.select();
 
+      document.execCommand("copy");
 
-/* Initialize */
+      document.body.removeChild(textarea);
+    }
 
-updateEmailTypes();
+    async function copyEmail() {
+      if (!emailOutput.innerHTML.trim()) {
+        return;
+      }
 
-</script>
+      const html = `
+        <div style="
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 14px;
+          line-height: 1.6;
+          color: #222222;
+        ">
+          ${emailOutput.innerHTML}
+        </div>
+      `;
 
+      const plainText = emailOutput.innerText;
+
+      try {
+        if (
+          navigator.clipboard &&
+          window.ClipboardItem
+        ) {
+          const htmlBlob = new Blob(
+            [html],
+            { type: "text/html" }
+          );
+
+          const textBlob = new Blob(
+            [plainText],
+            { type: "text/plain" }
+          );
+
+          const item = new ClipboardItem({
+            "text/html": htmlBlob,
+            "text/plain": textBlob
+          });
+
+          await navigator.clipboard.write([item]);
+
+          copyStatus.textContent =
+            "Email copied. You can now paste it into Gmail.";
+
+          return;
+        }
+      } catch (error) {
+        console.warn("Rich copy failed:", error);
+      }
+
+      fallbackRichCopy();
+    }
+
+    function fallbackRichCopy() {
+      const range = document.createRange();
+
+      range.selectNodeContents(emailOutput);
+
+      const selection = window.getSelection();
+
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      try {
+        document.execCommand("copy");
+
+        copyStatus.textContent =
+          "Email copied. You can now paste it into Gmail.";
+      } catch (error) {
+        copyStatus.textContent =
+          "Copy failed. Please select the email manually and copy it.";
+      }
+
+      selection.removeAllRanges();
+    }
+
+    accountType.addEventListener(
+      "change",
+      updateEmailTypeOptions
+    );
+
+    emailType.addEventListener(
+      "change",
+      updateFields
+    );
+
+    generateBtn.addEventListener(
+      "click",
+      generateEmail
+    );
+
+    copySubjectBtn.addEventListener(
+      "click",
+      copySubject
+    );
+
+    copyEmailBtn.addEventListener(
+      "click",
+      copyEmail
+    );
+
+    updateEmailTypeOptions();
+  </script>
 </body>
 </html>
